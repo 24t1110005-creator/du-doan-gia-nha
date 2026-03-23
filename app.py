@@ -108,4 +108,14 @@ with tab2:
         user_input = pd.DataFrame([[med_inc, house_age, ave_rooms, ave_bedrms, pop, ave_occup, lat, long]], 
                                   columns=feature_names)
         res = model.predict(user_input)[0]
-        gia_cu
+        gia_cu_the = res * 100000
+        
+        res_c1, res_c2 = st.columns(2)
+        with res_c1:
+            st.success(f"### Giá dự đoán: ${gia_cu_the:,.0f}")
+            thanh_toan = (gia_cu_the * (1 + lai_suat/100)) / 240
+            st.metric("Trả góp ước tính (20 năm)", f"${thanh_toan:,.2f}/tháng")
+        
+        with res_c2:
+            st.map(pd.DataFrame({'lat': [lat], 'lon': [long]}))
+        st.balloons()
