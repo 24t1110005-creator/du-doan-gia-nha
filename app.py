@@ -35,7 +35,7 @@ def train_model(X_train, y_train):
 model = train_model(X_train, y_train)
 
 st.set_page_config(page_title="Chuyên gia Định giá Nhà", layout="wide")
-st.title("🏠 Hệ thống Phân tích & Dự đoán Giá nhà")
+st.title("🏠 Hệ thống Phân tích & Dự đoán Giá nhà ở CALI")
 
 st.sidebar.header("📈 Chỉ số Thị trường 2026")
 lai_suat = st.sidebar.slider("Lãi suất vay (%)", 5.0, 15.0, 8.5)
@@ -59,7 +59,7 @@ with tab1:
 
     col1, col2 = st.columns(2)
     with col1:
-        st.write("### Biểu đồ Hồi quy (Cập nhật theo Slider)")
+        st.write("### Biểu đồ Hồi quy (Cập nhật theo chỉ số)")
         fig_reg = px.scatter(x=y_test, y=y_pred_moi, 
                              labels={'x': 'Giá thực tế ($100k)', 'y': 'Giá dự đoán ĐÃ ĐIỀU CHỈNH ($100k)'},
                              opacity=0.5, color_discrete_sequence=['#3366FF'])
