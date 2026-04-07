@@ -11,19 +11,6 @@ from sklearn.metrics import mean_absolute_error, r2_score
 
 st.set_page_config(page_title="ThichNhuanDat", layout="wide", page_icon="🏠")
 
-Đây là toàn bộ mã nguồn đã được làm sạch, bỏ hết các chú thích (comments) và cập nhật giao diện theo tông màu hoàng hôn California từ link ảnh bạn cung cấp.
-
-Python
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import streamlit as st
-from xgboost import XGBRegressor
-from sklearn.datasets import fetch_california_housing
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score
-
-st.set_page_config(page_title="Cali AI Real Estate 2026", layout="wide", page_icon="🏠")
 
 def add_custom_style():
     st.markdown(
