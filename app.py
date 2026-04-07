@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, r2_score
 
 
-st.set_page_config(page_title="Cali AI Real Estate 2026", layout="wide", page_icon="🏠")
+st.set_page_config(page_title="ThichNhuanDat", layout="wide", page_icon="🏠")
 
 def add_custom_style():
     st.markdown(
