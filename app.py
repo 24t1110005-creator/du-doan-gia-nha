@@ -17,7 +17,7 @@ def add_custom_style():
         <style>
         /* 1. Ảnh nền toàn trang */
         .stApp {
-            background-image: url("https:https://wallpapercave.com/wp/wp8972064.jpg");
+            background-image: url("https://wallpapercave.com/wp/wp8972064.jpg");
             background-attachment: fixed;
             background-size: cover;
         }
