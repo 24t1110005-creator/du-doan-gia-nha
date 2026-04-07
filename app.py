@@ -16,7 +16,7 @@ def add_custom_style():
         """
         <style>
         .stApp {
-            background-image: url("https://c4.wallpaperflare.com/wallpaper/819/356/1016/city-sunset-california-palm-trees-los-angeles-hd-wallpaper-preview.jpg");
+            background-image: url("https://static0.thetravelimages.com/wordpress/wp-content/uploads/2024/09/resized-image-16.jpg?w=1600&h=900&fit=crop");
             background-attachment: fixed;
             background-size: cover;
         }
