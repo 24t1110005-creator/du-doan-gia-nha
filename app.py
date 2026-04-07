@@ -2,19 +2,27 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import streamlit as st
+import joblib
+from xgboost import XGBRegressor t
 from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
 
+
+st.set_page_config(page_title="Cali AI Real Estate 2026", layout="wide", page_icon="🏠")
+
+
 @st.cache_data
-def load_data():
+def get_clean_data():
     housing = fetch_california_housing()
     df = pd.DataFrame(housing.data, columns=housing.feature_names)
     df['Gia_Nha'] = housing.target
+    
+    df = df[df['Gia_Nha'] < 4.9] 
     return df, housing.feature_names
 
-df, feature_names = load_data()
+df, feature_names = get_clean_data()
+
 
 ten_tieng_viet = {
     'MedInc': 'Thu nhập TB', 'HouseAge': 'Tuổi nhà', 'AveRooms': 'Số phòng TB',
@@ -22,103 +30,87 @@ ten_tieng_viet = {
     'Latitude': 'Vĩ độ', 'Longitude': 'Kinh độ'
 }
 
+@st.cache_resource
+def train_optimized_model(X, y):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    model = XGBRegressor(n_estimators=200, max_depth=6, learning_rate=0.1, random_state=42)
+    model.fit(X_train, y_train)
+    return model, X_test, y_test
+
 X = df.drop('Gia_Nha', axis=1)
 y = df['Gia_Nha']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model, X_test, y_test = train_optimized_model(X, y)
 
-@st.cache_resource
-def train_model(X_train, y_train):
-    model = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42, n_jobs=-1)
-    model.fit(X_train, y_train)
-    return model
 
-model = train_model(X_train, y_train)
+st.sidebar.markdown("## 🌐 Chỉ số Kinh tế 2026")
+st.sidebar.info("Các yếu tố ngoại vi ảnh hưởng đến giá trị tài sản.")
 
-st.set_page_config(page_title="Chuyên gia Định giá Nhà", layout="wide")
-st.title("🏠 Hệ thống Phân tích & Dự đoán Giá nhà ở CALI")
+lai_suat = st.sidebar.slider("Lãi suất vay (%)", 3.0, 15.0, 7.0)
+lam_phat = st.sidebar.slider("Lạm phát kỳ vọng (%)", 0.0, 10.0, 3.5)
+nhu_cau = st.sidebar.select_slider("Cung - Cầu", options=[0.8, 0.9, 1.0, 1.1, 1.2], value=1.0)
+chi_so_vung = st.sidebar.selectbox("Khu vực kinh tế", [1.0, 1.1, 1.2, 1.3], format_func=lambda x: f"Mức độ phát triển: x{x}")
 
-st.sidebar.header("📈 Chỉ số Thị trường 2026")
-lai_suat = st.sidebar.slider("Lãi suất vay (%)", 5.0, 15.0, 8.5)
-lam_phat = st.sidebar.slider("Tỷ lệ lạm phát (%)", 0.0, 10.0, 4.0)
-nhu_cau = st.sidebar.select_slider("Nhu cầu thị trường", options=[0.8, 0.9, 1.0, 1.1, 1.2], value=1.0)
-phi_xay_dung = st.sidebar.slider("Biến động chi phí xây dựng (%)", -10, 20, 0)
-chi_so_vung = st.sidebar.slider("Chỉ số kinh tế vùng (Hệ số)", 0.9, 1.5, 1.0)
 
-he_so_thi_truong = nhu_cau * (1 + (lam_phat / 100)) * (1 + (phi_xay_dung / 100)) * chi_so_vung
+he_so_thi_truong = nhu_cau * (1 + (lam_phat/100)) * chi_so_vung * (1 - (lai_suat - 7)/100)
 
-tab1, tab2 = st.tabs(["📊 Thống kê & Hiệu suất", "🚀 Dự đoán giá"])
+
+st.title("🏠 Hệ thống Định giá Bất động sản Thông minh")
+st.markdown("---")
+
+tab1, tab2, tab3 = st.tabs(["🎯 Dự đoán chuyên sâu", "📈 Phân tích thị trường", "📋 Dữ liệu mẫu"])
 
 with tab1:
-    y_pred_goc = model.predict(X_test)
-    y_pred_moi = y_pred_goc * he_so_thi_truong
+    col_in, col_out = st.columns([1, 1])
     
-    col_m1, col_m2, col_m3 = st.columns(3)
-    col_m1.metric("Hệ số thị trường", f"x{he_so_thi_truong:.2f}")
-    col_m2.metric("Giá dự đoán TB", f"${y_pred_moi.mean() * 100000:,.0f}")
-    col_m3.metric("R2 Score (Gốc)", f"{r2_score(y_test, y_pred_goc):.2%}")
+    with col_in:
+        st.subheader("📍 Thông số Bất động sản")
+        c1, c2 = st.columns(2)
+        with c1:
+            med_inc = st.number_input("Thu nhập khu vực ($10k)", 0.5, 15.0, 4.0, help="Thu nhập trung bình của cư dân xung quanh")
+            house_age = st.slider("Tuổi thọ công trình (năm)", 1, 52, 20)
+            ave_rooms = st.number_input("Tổng số phòng (TB)", 1.0, 15.0, 5.0)
+        with c2:
+            ave_occup = st.number_input("Số người mỗi hộ", 0.5, 10.0, 3.0)
+            lat = st.number_input("Vĩ độ (Latitude)", 32.0, 42.0, 34.05)
+            long = st.number_input("Kinh độ (Longitude)", -124.0, -114.0, -118.24)
+        
+        btn_predict = st.button("🚀 TÍNH TOÁN GIÁ TRỊ", use_container_width=True)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.write("### Biểu đồ Hồi quy (Cập nhật theo chỉ số)")
-        fig_reg = px.scatter(x=y_test, y=y_pred_moi, 
-                             labels={'x': 'Giá thực tế ($100k)', 'y': 'Giá dự đoán ĐÃ ĐIỀU CHỈNH ($100k)'},
-                             opacity=0.5, color_discrete_sequence=['#3366FF'])
-        fig_reg.add_shape(type="line", x0=y_test.min(), y0=y_test.min(), x1=y_test.max(), y1=y_test.max(),
-                          line=dict(color="Red", dash="dot"))
-        st.plotly_chart(fig_reg, use_container_width=True)
-
-    with col2:
-        st.write("### Mức độ quan trọng của đặc trưng")
-        vi_features = [ten_tieng_viet.get(f, f) for f in feature_names]
-        feat_df = pd.DataFrame({'Đặc trưng': vi_features, 'Độ quan trọng': model.feature_importances_}).sort_values(by='Độ quan trọng')
-        fig_imp = px.bar(feat_df, x='Độ quan trọng', y='Đặc trưng', orientation='h', color='Độ quan trọng')
-        st.plotly_chart(fig_imp, use_container_width=True)
+    with col_out:
+        if btn_predict:
+            
+            input_data = pd.DataFrame([[med_inc, house_age, ave_rooms, 1.0, 1500, ave_occup, lat, long]], columns=feature_names)
+            
+            raw_price = model.predict(input_data)[0]
+            final_price = raw_price * he_so_thi_truong * 100000 
+            
+            st.metric("GIÁ TRỊ ƯỚC TÍNH", f"${final_price:,.0f}", delta=f"{(he_so_thi_truong-1)*100:.1f}% vs. Gốc")
+            
+            
+            st.markdown(f"""
+            - **Giá gốc mô hình:** `${raw_price*100000:,.0f}`
+            - **Điều chỉnh thị trường:** `x{he_so_thi_truong:.2f}`
+            - **Gợi ý vay:** Trả hàng tháng ước tính `${(final_price * 0.006):,.2f}` (30 năm, lãi suất {lai_suat}%)
+            """)
+            st.map(pd.DataFrame({'lat': [lat], 'lon': [long]}))
 
 with tab2:
-    st.subheader("Nhập thông số bất động sản")
+    st.subheader("📊 Hiệu suất Mô hình & Đặc trưng")
+    m1, m2 = st.columns(2)
     
-    st.markdown("#### 📍 Vị trí (Location)")
-    khu_vuc = st.selectbox("Chọn khu vực", 
-                           ["San Francisco (Vùng Bắc)", "Los Angeles (Vùng Nam)", 
-                            "San Diego (Cận Nam)", "Sacramento (Nội địa)", "Tùy chỉnh tọa độ"])
     
-    toa_do_vung = {
-        "San Francisco (Vùng Bắc)": (37.77, -122.41), "Los Angeles (Vùng Nam)": (34.05, -118.24),
-        "San Diego (Cận Nam)": (32.71, -117.16), "Sacramento (Nội địa)": (38.58, -121.49),
-        "Tùy chỉnh tọa độ": (35.0, -119.0)
-    }
-    lat_def, long_def = toa_do_vung[khu_vuc]
+    feat_imp = pd.DataFrame({'Yếu tố': [ten_tieng_viet.get(f, f) for f in feature_names], 'Độ ảnh hưởng': model.feature_importances_})
+    feat_imp = feat_imp.sort_values('Độ ảnh hưởng', ascending=True)
+    fig_imp = px.bar(feat_imp, x='Độ ảnh hưởng', y='Yếu tố', orientation='h', title="Yếu tố nào quyết định giá?")
+    m1.plotly_chart(fig_imp, use_container_width=True)
+    
+    
+    y_pred = model.predict(X_test) * he_so_thi_truong
+    fig_res = px.scatter(x=y_test * 100000, y=y_pred * 100000, labels={'x': 'Giá thật', 'y': 'Giá dự đoán'}, title="Độ chính xác thực tế")
+    fig_res.add_shape(type="line", x0=0, y0=0, x1=500000, y1=500000, line=dict(color="Red"))
+    m2.plotly_chart(fig_res, use_container_width=True)
 
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        med_inc = st.number_input("Thu nhập TB ($10k)", 0.5, 15.0, 3.5)
-        house_age = st.slider("Tuổi thọ nhà", 1, 52, 28)
-    with c2:
-        ave_rooms = st.slider("Số phòng (Trung bình)", 1.0, 15.0, 5.0)
-        ave_bedrms = st.slider("Phòng ngủ (Trung bình)", 0.5, 5.0, 1.0)
-    with c3:
-        pop = st.number_input("Dân số khu vực", 3, 35000, 1400)
-        ave_occup = st.number_input("Người ở trung bình/Hộ", 0.1, 10.0, 3.0)
-    
-    if khu_vuc == "Tùy chỉnh tọa độ":
-        lat = st.slider("Vĩ độ", 32.0, 42.0, lat_def)
-        long = st.slider("Kinh độ", -124.0, -114.0, long_def)
-    else:
-        lat, long = lat_def, long_def
-
-    if st.button("🚀 Bắt đầu định giá"):
-        user_input = pd.DataFrame([[med_inc, house_age, ave_rooms, ave_bedrms, pop, ave_occup, lat, long]], 
-                                  columns=feature_names)
-        res_raw = model.predict(user_input)[0]
-        res_final = res_raw * he_so_thi_truong
-        gia_that = res_final * 100000
-        
-        res_c1, res_c2 = st.columns(2)
-        with res_c1:
-            st.success(f"### Giá dự đoán: ${gia_that:,.0f}")
-            thanh_toan = (gia_that * (1 + lai_suat/100)) / 240
-            st.metric("Trả góp ước tính (240 tháng)", f"${thanh_toan:,.2f}/tháng")
-        
-        with res_c2:
-            st.map(pd.DataFrame({'lat': [lat], 'lon': [long]}))
-        st.balloons()
+with tab3:
+    st.dataframe(df.head(100), use_container_width=True)
+    st.download_button("Tải dữ liệu sạch (.csv)", df.to_csv().encode('utf-8'), "cali_housing_clean.csv")
