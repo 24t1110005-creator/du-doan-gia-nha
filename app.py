@@ -17,35 +17,34 @@ def add_custom_style():
         """
         <style>
         .stApp {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
-                              url("https://static0.thetravelimages.com/wordpress/wp-content/uploads/2024/09/resized-image-16.jpg?w=1600&h=900&fit=crop");
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                              url("https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=2000&auto=format&fit=crop");
             background-attachment: fixed;
             background-size: cover;
+            background-position: center;
         }
 
         h1 {
             color: #FFFFFF !important;
             text-shadow: 3px 3px 6px #2D1B4E;
-            background-color: rgba(45, 27, 78, 0.4);
+            background-color: rgba(45, 27, 78, 0.5);
             padding: 15px 25px;
             border-radius: 15px;
             border-left: 5px solid #FF9E2C;
         }
 
-        
-        section[data-testid="stSidebar"] {
-            background-color: rgba(20, 26, 48, 0.95) !important; /* Tím than đậm */
+        [data-testid="stSidebar"] {
+            background-color: rgba(15, 15, 25, 0.98) !important;
             border-right: 1px solid rgba(255, 158, 44, 0.3);
         }
 
-        
-        section[data-testid="stSidebar"] .stMarkdown h2, 
-        section[data-testid="stSidebar"] label {
-            color: #FFB347 !important; /* Màu cam hoàng hôn */
+        [data-testid="stSidebar"] .stMarkdown h2, 
+        [data-testid="stSidebar"] label p {
+            color: #FFB347 !important;
         }
 
         [data-testid="stMetric"] {
-            background-color: rgba(28, 33, 53, 0.8) !important; 
+            background-color: rgba(28, 33, 53, 0.85) !important; 
             border: 1px solid rgba(255, 158, 44, 0.4);
             padding: 20px;
             border-radius: 15px;
@@ -54,7 +53,6 @@ def add_custom_style():
 
         [data-testid="stMetricLabel"] p {
             color: #E0E0E0 !important;
-            font-size: 15px !important;
         }
 
         [data-testid="stMetricValue"] div {
@@ -63,7 +61,7 @@ def add_custom_style():
         }
 
         .stTabs [data-baseweb="tab-list"] {
-            background-color: rgba(28, 33, 53, 0.9);
+            background-color: rgba(28, 33, 53, 0.95);
             border-radius: 12px;
             padding: 8px;
         }
@@ -72,11 +70,6 @@ def add_custom_style():
             color: #FFB347 !important;
         }
         
-        button[data-baseweb="tab"][aria-selected="true"] {
-            background-color: rgba(255, 158, 44, 0.2) !important;
-            border-radius: 8px;
-        }
-
         .stDataFrame, .js-plotly-plot {
             background-color: rgba(255, 255, 255, 0.9);
             padding: 15px;
@@ -87,6 +80,8 @@ def add_custom_style():
         """, 
         unsafe_allow_html=True
     )
+
+add_custom_style()
 
 @st.cache_data
 def get_clean_data():
