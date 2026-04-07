@@ -126,7 +126,7 @@ chi_so_vung = st.sidebar.selectbox("Khu vực kinh tế", [1.0, 1.1, 1.2, 1.3], 
 he_so_thi_truong = nhu_cau * (1 + (lam_phat/100)) * chi_so_vung * (1 - (lai_suat - 7)/100)
 
 
-st.title("🏠 Hệ thống Định giá Bất động sản Thông minh ở CALIFORNIA")
+st.title("🏠 Hệ thống Định giá Bất động sản ở CALIFORNIA")
 st.markdown("---")
 
 tab1, tab2, tab3 = st.tabs(["🎯 Dự đoán chuyên sâu", "📈 Phân tích thị trường", "📋 Dữ liệu mẫu"])
