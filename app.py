@@ -16,97 +16,62 @@ def add_custom_style():
         """
         <style>
         .stApp {
-            background-image: url("def add_custom_style():
-    st.markdown(
-        """
-        <style>
-        
-        .stApp {
             background-image: url("https://c4.wallpaperflare.com/wallpaper/819/356/1016/city-sunset-california-palm-trees-los-angeles-hd-wallpaper-preview.jpg");
             background-attachment: fixed;
             background-size: cover;
         }
 
-        
         h1 {
             color: #FFFFFF !important;
             text-shadow: 2px 2px 4px #000000;
-        }
-
-        
-        [data-testid="stMetric"] {
-            background-color: rgba(20, 20, 20, 0.7); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 12px;
-            color: white !important;
-        }
-
-        
-        [data-testid="stMetricValue"] {
-            color: #00FFCC !important; /* Màu xanh neon cho con số giá tiền */
-        }
-        
-        [data-testid="stMetricLabel"] {
-            color: #CCCCCC !important;
-        }
-
-        
-        .stTabs [data-baseweb="tab-list"] {
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 10px 20px;
             border-radius: 10px;
         }
-        
-        
+
+        [data-testid="stMetric"] {
+            background-color: rgba(20, 20, 20, 0.8) !important; 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        [data-testid="stMetricLabel"] p {
+            color: #BBBBBB !important;
+            font-size: 16px !important;
+        }
+
+        [data-testid="stMetricValue"] div {
+            color: #00FFCC !important;
+            font-weight: bold !important;
+        }
+
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            border-radius: 10px;
+        }
+
         button[data-baseweb="tab"] p {
             color: white !important;
         }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )");
-            background-attachment: fixed;
-            background-size: cover;
-        }
 
-        
-        h1 {
-            color: #FFFFFF !important;
-            text-shadow: 2px 2px 4px #000000;
-        }
-
-        
-        [data-testid="stMetric"] {
-            background-color: rgba(20, 20, 20, 0.7); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 12px;
-            color: white !important;
-        }
-
-        
-        [data-testid="stMetricValue"] {
-            color: #00FFCC !important; /* Màu xanh neon cho con số giá tiền */
+        section[data-testid="stSidebar"] {
+            background-color: rgba(255, 255, 255, 0.95) !important;
         }
         
-        [data-testid="stMetricLabel"] {
-            color: #CCCCCC !important;
-        }
-
-        
-        .stTabs [data-baseweb="tab-list"] {
-            background-color: rgba(0, 0, 0, 0.6);
+        .stDataFrame, .js-plotly-plot {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
             border-radius: 10px;
         }
-        
-        
-        button[data-baseweb="tab"] p {
-            color: white !important;
-        }
         </style>
-        """,
+        """, 
         unsafe_allow_html=True
     )
+
+add_custom_style()
 
 @st.cache_data
 def get_clean_data():
