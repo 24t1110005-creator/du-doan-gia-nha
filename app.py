@@ -16,12 +16,12 @@ def add_bg_from_url():
          f"""
          <style>
          .stApp {{
-             background-image: url("https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80");
+             background-image: url("https://images.trvl-media.com/place/178280/2b5162f4-6887-4334-9840-0d240e3756c3.jpg");
              background-attachment: fixed;
              background-size: cover;
          }}
          
-         /* Làm cho các khung nội dung dễ đọc hơn trên nền ảnh */
+         
          [data-testid="stVerticalBlock"] > div:has(div.stMetric) {{
              background-color: rgba(255, 255, 255, 0.8);
              padding: 20px;
