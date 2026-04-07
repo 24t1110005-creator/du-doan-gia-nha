@@ -32,6 +32,18 @@ def add_custom_style():
             border-left: 5px solid #FF9E2C;
         }
 
+        
+        section[data-testid="stSidebar"] {
+            background-color: rgba(20, 26, 48, 0.95) !important; /* Tím than đậm */
+            border-right: 1px solid rgba(255, 158, 44, 0.3);
+        }
+
+        
+        section[data-testid="stSidebar"] .stMarkdown h2, 
+        section[data-testid="stSidebar"] label {
+            color: #FFB347 !important; /* Màu cam hoàng hôn */
+        }
+
         [data-testid="stMetric"] {
             background-color: rgba(28, 33, 53, 0.8) !important; 
             border: 1px solid rgba(255, 158, 44, 0.4);
@@ -65,10 +77,6 @@ def add_custom_style():
             border-radius: 8px;
         }
 
-        section[data-testid="stSidebar"] {
-            background-color: rgba(255, 255, 255, 0.95) !important;
-        }
-
         .stDataFrame, .js-plotly-plot {
             background-color: rgba(255, 255, 255, 0.9);
             padding: 15px;
@@ -79,8 +87,6 @@ def add_custom_style():
         """, 
         unsafe_allow_html=True
     )
-
-add_custom_style()
 
 @st.cache_data
 def get_clean_data():
