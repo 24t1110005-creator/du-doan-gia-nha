@@ -83,7 +83,7 @@ def add_custom_style():
 
 add_custom_style()
 
-@st.cache_data
+
 def get_clean_data():
     housing = fetch_california_housing()
     df = pd.DataFrame(housing.data, columns=housing.feature_names)
