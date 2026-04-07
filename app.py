@@ -15,58 +15,98 @@ def add_custom_style():
     st.markdown(
         """
         <style>
-        /* 1. Ảnh nền toàn trang */
         .stApp {
-            background-image: url("https://www.pixelstalk.net/wp-content/uploads/2016/04/Pictures-download-california-wallpapers-HD.jpg");
+            background-image: url("def add_custom_style():
+    st.markdown(
+        """
+        <style>
+        
+        .stApp {
+            background-image: url("https://c4.wallpaperflare.com/wallpaper/819/356/1016/city-sunset-california-palm-trees-los-angeles-hd-wallpaper-preview.jpg");
             background-attachment: fixed;
             background-size: cover;
         }
 
-        /* 2. Làm mờ lớp nền phía sau nội dung chính (Main Container) */
-        .main {
-            background-color: rgba(255, 255, 255, 0.05); /* Lớp phủ siêu mờ */
+        
+        h1 {
+            color: #FFFFFF !important;
+            text-shadow: 2px 2px 4px #000000;
         }
 
-        /* 3. Tinh chỉnh các khối Metric (Chỉ số) */
+        
         [data-testid="stMetric"] {
-            background-color: rgba(255, 255, 255, 0.85); /* Trắng đục để nổi chữ */
-            padding: 15px 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
+            background-color: rgba(20, 20, 20, 0.7); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            color: white !important;
+        }
+
+        
+        [data-testid="stMetricValue"] {
+            color: #00FFCC !important; /* Màu xanh neon cho con số giá tiền */
         }
         
-        [data-testid="stMetric"]:hover {
-            transform: translateY(-5px); /* Hiệu ứng bay bổng khi di chuột */
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        [data-testid="stMetricLabel"] {
+            color: #CCCCCC !important;
         }
 
-        /* 4. Tinh chỉnh các Tabs và Sidebar để dễ đọc hơn */
+        
         .stTabs [data-baseweb="tab-list"] {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
         }
-
-        section[data-testid="stSidebar"] {
-            background-color: rgba(255, 255, 255, 0.9) !important;
+        
+        
+        button[data-baseweb="tab"] p {
+            color: white !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )");
+            background-attachment: fixed;
+            background-size: cover;
         }
 
-        /* 5. Tùy chỉnh tiêu đề chính */
+        
         h1 {
-            color: #1E3A8A !important; /* Màu xanh đậm chuyên nghiệp */
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 10px 20px;
+            color: #FFFFFF !important;
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        
+        [data-testid="stMetric"] {
+            background-color: rgba(20, 20, 20, 0.7); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            color: white !important;
+        }
+
+        
+        [data-testid="stMetricValue"] {
+            color: #00FFCC !important; /* Màu xanh neon cho con số giá tiền */
+        }
+        
+        [data-testid="stMetricLabel"] {
+            color: #CCCCCC !important;
+        }
+
+        
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
-            display: inline-block;
+        }
+        
+        
+        button[data-baseweb="tab"] p {
+            color: white !important;
         }
         </style>
         """,
         unsafe_allow_html=True
     )
-
-add_custom_style()
 
 @st.cache_data
 def get_clean_data():
