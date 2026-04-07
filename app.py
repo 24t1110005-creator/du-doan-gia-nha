@@ -11,28 +11,62 @@ from sklearn.metrics import mean_absolute_error, r2_score
 
 st.set_page_config(page_title="Cali AI Real Estate 2026", layout="wide", page_icon="🏠")
 
-def add_bg_from_url():
+def add_custom_style():
     st.markdown(
-         f"""
-         <style>
-         .stApp {{
-             background-image: url("https://images.trvl-media.com/place/178280/2b5162f4-6887-4334-9840-0d240e3756c3.jpg");
-             background-attachment: fixed;
-             background-size: cover;
-         }}
-         
-         
-         [data-testid="stVerticalBlock"] > div:has(div.stMetric) {{
-             background-color: rgba(255, 255, 255, 0.8);
-             padding: 20px;
-             border-radius: 10px;
-         }}
-         </style>
-         """,
-         unsafe_allow_html=True
-     )
+        """
+        <style>
+        /* 1. Ảnh nền toàn trang */
+        .stApp {
+            background-image: url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80");
+            background-attachment: fixed;
+            background-size: cover;
+        }
 
-add_bg_from_url()
+        /* 2. Làm mờ lớp nền phía sau nội dung chính (Main Container) */
+        .main {
+            background-color: rgba(255, 255, 255, 0.05); /* Lớp phủ siêu mờ */
+        }
+
+        /* 3. Tinh chỉnh các khối Metric (Chỉ số) */
+        [data-testid="stMetric"] {
+            background-color: rgba(255, 255, 255, 0.85); /* Trắng đục để nổi chữ */
+            padding: 15px 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        [data-testid="stMetric"]:hover {
+            transform: translateY(-5px); /* Hiệu ứng bay bổng khi di chuột */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* 4. Tinh chỉnh các Tabs và Sidebar để dễ đọc hơn */
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        section[data-testid="stSidebar"] {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        /* 5. Tùy chỉnh tiêu đề chính */
+        h1 {
+            color: #1E3A8A !important; /* Màu xanh đậm chuyên nghiệp */
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+add_custom_style()
 
 @st.cache_data
 def get_clean_data():
