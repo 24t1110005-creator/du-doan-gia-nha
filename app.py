@@ -11,60 +11,82 @@ from sklearn.metrics import mean_absolute_error, r2_score
 
 st.set_page_config(page_title="ThichNhuanDat", layout="wide", page_icon="🏠")
 
+Đây là toàn bộ mã nguồn đã được làm sạch, bỏ hết các chú thích (comments) và cập nhật giao diện theo tông màu hoàng hôn California từ link ảnh bạn cung cấp.
+
+Python
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import streamlit as st
+from xgboost import XGBRegressor
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+
+st.set_page_config(page_title="Cali AI Real Estate 2026", layout="wide", page_icon="🏠")
+
 def add_custom_style():
     st.markdown(
         """
         <style>
         .stApp {
-            background-image: url("https://static0.thetravelimages.com/wordpress/wp-content/uploads/2024/09/resized-image-16.jpg?w=1600&h=900&fit=crop");
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                              url("https://static0.thetravelimages.com/wordpress/wp-content/uploads/2024/09/resized-image-16.jpg?w=1600&h=900&fit=crop");
             background-attachment: fixed;
             background-size: cover;
         }
 
         h1 {
             color: #FFFFFF !important;
-            text-shadow: 2px 2px 4px #000000;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding: 10px 20px;
-            border-radius: 10px;
+            text-shadow: 3px 3px 6px #2D1B4E;
+            background-color: rgba(45, 27, 78, 0.4);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border-left: 5px solid #FF9E2C;
         }
 
         [data-testid="stMetric"] {
-            background-color: rgba(20, 20, 20, 0.8) !important; 
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background-color: rgba(28, 33, 53, 0.8) !important; 
+            border: 1px solid rgba(255, 158, 44, 0.4);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
         [data-testid="stMetricLabel"] p {
-            color: #BBBBBB !important;
-            font-size: 16px !important;
+            color: #E0E0E0 !important;
+            font-size: 15px !important;
         }
 
         [data-testid="stMetricValue"] div {
-            color: #00FFCC !important;
-            font-weight: bold !important;
+            color: #FFB347 !important; 
+            text-shadow: 0px 0px 10px rgba(255, 179, 71, 0.4);
         }
 
         .stTabs [data-baseweb="tab-list"] {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 5px;
-            border-radius: 10px;
+            background-color: rgba(28, 33, 53, 0.9);
+            border-radius: 12px;
+            padding: 8px;
         }
 
         button[data-baseweb="tab"] p {
-            color: white !important;
+            color: #FFB347 !important;
+        }
+        
+        button[data-baseweb="tab"][aria-selected="true"] {
+            background-color: rgba(255, 158, 44, 0.2) !important;
+            border-radius: 8px;
         }
 
         section[data-testid="stSidebar"] {
             background-color: rgba(255, 255, 255, 0.95) !important;
         }
-        
+
         .stDataFrame, .js-plotly-plot {
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 10px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #FF9E2C;
         }
         </style>
         """, 
