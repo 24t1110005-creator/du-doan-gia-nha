@@ -11,6 +11,28 @@ from sklearn.metrics import mean_absolute_error, r2_score
 
 st.set_page_config(page_title="Cali AI Real Estate 2026", layout="wide", page_icon="🏠")
 
+def add_bg_from_url():
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background-image: url("https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80");
+             background-attachment: fixed;
+             background-size: cover;
+         }}
+         
+         /* Làm cho các khung nội dung dễ đọc hơn trên nền ảnh */
+         [data-testid="stVerticalBlock"] > div:has(div.stMetric) {{
+             background-color: rgba(255, 255, 255, 0.8);
+             padding: 20px;
+             border-radius: 10px;
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+
+add_bg_from_url()
 
 @st.cache_data
 def get_clean_data():
